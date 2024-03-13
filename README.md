@@ -1,39 +1,53 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# App Version Updater
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
+this package is used to check if your app has a new version on playstore or apple app store.
+or you can even check what is the latest version of another app on playstore or apple app store.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
--->
+### Installing
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+Add App Version Updater to your pubspec:
 
-## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
-```dart
-const like = 'sample';
+```yaml
+dependencies:
+  flutter_app_version_updater: any # or the latest version on Pub
 ```
 
-## Additional information
+### Usage
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+```dart
+  final _checker = AppVersionChecker();
+
+  @override
+  void initState() {
+    super.initState();
+    checkVersion();
+  }
+
+  void checkVersion() async {
+    _checker.checkUpdate().then((value) {
+      print(value.canUpdate); //return true if update is available
+      print(value.currentVersion); //return current app version
+      print(value.newVersion); //return the new app version
+      print(value.appURL); //return the app url
+      print(value.errorMessage); //return error message if found else it will return null
+    });
+  }
+```
+#### Or
+
+```dart
+  final _checker = AppVersionUpdater(
+      appId: "specify the app id (optional)",
+      currentVersion: "specify the current version (optional)");
+...
+```
+
+#### Use on ApkPure Store
+
+```dart
+   final _checker = AppVersionUpdater(
+    appId: "com.vanced.android.youtube",
+    androidStore: AndroidStore.apkPure,
+  );
+...
+```
